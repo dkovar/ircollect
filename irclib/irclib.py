@@ -10,6 +10,12 @@
 #
 
 import sys
+import os
+import struct
+
+import mbr_parser
+from analyzemft import mft
+from analyzemft import mftsession
 
 VERSION = "v0.0.1"
 
@@ -18,12 +24,12 @@ class CollectSession:
     def __init__(self):
         self.bs = {}
         self.part = {}
-        self.rd
+        self.filelist = {}
 
     def open_disk(self, path):
         
         try:
-            self.rd = irs.opendisk(path, 'rb+')            #code
+            self.rd = open(path, 'rb+')            #code
         except (IOError, TypeError):
             print "Unable to open %s" % (path)
             sys.exit()
@@ -58,7 +64,7 @@ class CollectSession:
 
         # MFT cluster offset * (sectors per cluster * bytes per sector) + start of partition
         # This is hardwired, but if the partition isn't the first one, this'll break
-        self.part['mftstart'] = mftcluster[0] * self.part['bps'] * self['spc'] + part_offset
+        self.part['mftstart'] = mftcluster[0] * self.part['bps'] * self.part['spc'] + part_offset
     
     
     def collect_mft(self):
@@ -84,16 +90,15 @@ class CollectSession:
             pass
         
         # print (block['p1_start'] + (offset * block['spc'] * block['bps']))
-        file.seek(self.part['start'] + (offset * self.part['spc'] * self.part['bps']))
+        self.rd.seek(self.part['start'] + (offset * self.part['spc'] * self.part['bps']))
         for i in range(0, length * 4096, 8):
-            buffer = file.read(8)
+            buffer = self.rd.read(8)
             outfile.write(buffer)
         outfile.close()
                 
     def get_filelist(self):
     
         num_records = 0
-        filelist = {}
         record = {}
         
         self.rd.seek(self.part['mftstart'], 0)
@@ -108,12 +113,12 @@ class CollectSession:
         self.rd.seek(self.part['mftstart'], 0)
     
         for i in range(0, length, 1024):    
-            raw_record = diskfd.read(1024)
+            raw_record = self.rd.read(1024)
     
             record = {}
             minirec = {}
-            record = mft.parse_record(raw_record, options)
-            if options.debug: print record
+            record = mft.parse_record(raw_record, self.options)
+            if self.options.debug: print record
                    
             minirec['filename'] = record['filename']
             minirec['fncnt'] = record['fncnt']
@@ -132,31 +137,28 @@ class CollectSession:
                 minirec['data'] = ''
                 minirec['datacnd'] = 0
     
-            filelist[num_records] = minirec
+            self.filelist[num_records] = minirec
     
             num_records = num_records + 1
     
-        gen_filepaths(filelist)
+        self.gen_filepaths()
         
-        self.filelist = filelist
-
-    def gen_filepaths(mft):
+    def gen_filepaths(self):
     
-        for i in mft:
+        for i in self.filelist:
     
     #            if filename starts with / or ORPHAN, we're done.
     #            else get filename of parent, add it to ours, and we're done.
     
         # If we've not already calculated the full path ....
-            if (mft[i]['filename']) == '':
+            if (self.filelist[i]['filename']) == '':
         
-                 if (mft[i]['fncnt'] > 0 ):
-                      get_folder_path(mft, i)
+                 if (self.filelist[i]['fncnt'] > 0 ):
+                      self.get_folder_path(self.filelist, i)
                  else:
-                      mft[i]['filename'] == 'NoFNRecord'
+                      self.filelist[i]['filename'] == 'NoFNRecord'
 
-
-    def get_folder_path(mftrecords, seqnum):
+    def get_folder_path(self, mftrecords, seqnum):
     
         if seqnum not in mftrecords:
              return 'Orphan'
@@ -180,7 +182,7 @@ class CollectSession:
             return mftrecords[seqnum]['filename']
     
         # We're not at the top of the tree and we've not hit an error
-        parentpath = get_folder_path(mftrecords, (mftrecords[seqnum]['par_ref']))
+        parentpath = self.get_folder_path(mftrecords, (mftrecords[seqnum]['par_ref']))
         mftrecords[seqnum]['filename'] =  parentpath + '/' + mftrecords[seqnum]['name']
     
         return mftrecords[seqnum]['filename']

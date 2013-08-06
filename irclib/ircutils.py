@@ -2,7 +2,7 @@ import sys
 import os
 from optparse import OptionParser
      
-def rr_options():
+def irc_options():
 
     parser = OptionParser()
     parser.set_defaults(debug=False,localtz=False,directory='')
