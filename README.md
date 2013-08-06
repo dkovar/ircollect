@@ -16,21 +16,30 @@ All collected files are stored in a directory specified with the -d option. They
 hostname and the date-time the script was run.
 
 Requirements:
+-------------
 
 pip install analyzemft
 
 Status:
+-------
 
 VERY beta. Active development daily, often hourly
 
 Upcoming features:
+------------------
 
 File an issue, please, if there is something you'd like.
 
-* Windows executable
-* Netcat support
+- [ ] Windows executable
+- [ ] Netcat support
+
+Bugs:
+-----
+
+Many
 
 Thank you to:
+-------------
 
 * Jamie Levy for mbr_parser
 * Willi Ballenthin - bit manipulation code, lots of useful tips for analyzeMFT
