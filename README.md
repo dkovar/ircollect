@@ -32,6 +32,8 @@ File an issue, please, if there is something you'd like.
 
 - [ ] Windows executable
 - [ ] Netcat support
+- [ ] Handle Win7 vs XP hive location differences
+- [ ] Add configuration file support
 
 Bugs:
 -----
