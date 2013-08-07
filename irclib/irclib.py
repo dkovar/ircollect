@@ -80,20 +80,21 @@ class CollectSession:
     
         outfile = open(outname,'wb')
     
-        # BROKEN = only collects the last datarun
         try:
             for i in range(0, runs['ndataruns']):
                 (length, offset) = (runs['dataruns'][i][0], runs['dataruns'][i][1])
-                print length, offset
-            
+                print "Outname: %s Offset: %d Len: %d" % \
+                    (outname, (offset * self.part['spc'] * self.part['bps']), length)
+
+                # print (block['p1_start'] + (offset * block['spc'] * block['bps']))
+                self.rd.seek(self.part['start'] + (offset * self.part['spc'] * self.part['bps']))
+                for i in range(0, length * 4096, 512):
+                    buffer = self.rd.read(512)
+                    outfile.write(buffer)
+    
         except Exception:
             pass
         
-        # print (block['p1_start'] + (offset * block['spc'] * block['bps']))
-        self.rd.seek(self.part['start'] + (offset * self.part['spc'] * self.part['bps']))
-        for i in range(0, length * 4096, 8):
-            buffer = self.rd.read(8)
-            outfile.write(buffer)
         outfile.close()
                 
     def get_filelist(self):

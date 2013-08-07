@@ -13,6 +13,16 @@ def irc_options():
     parser.add_option("-d", "--directory", dest="directory",
                       help="Output all results to specified directory", metavar="OUTDIR")
     
+    parser.add_option("-s", "--standard", action="store_true", dest="standard",
+                      help="Collect standard set of files")
+    
+    parser.add_option("-c", "--config", dest="configfile",
+                      help="Config file describing files to collect")
+    
+    # Check on syntax for specifying multiple arguments to a single option
+    parser.add_option("-f", "--files", dest="files",
+                      help="List of files to collect")
+    
     parser.add_option("--debug",
                       action="store_true", dest="debug",
                       help="turn on debugging output")

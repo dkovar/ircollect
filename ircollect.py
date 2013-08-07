@@ -36,25 +36,36 @@ if __name__=="__main__":
         os.makedirs(workdir)
     
     irs.get_mbr()
-    ircutils.write_output(irs.mbr, workdir, 'mbr')
+    if irs.options.standard == True:
+        ircutils.write_output(irs.mbr, workdir, 'mbr')
     
     irs.get_boot_sector()
 
-    #collect_mft(file, boot_sector, options)
+    if irs.options.standard == True:
+        collect_mft(file, boot_sector, options)
+        
     irs.get_filelist()
     
-    for i in irs.filelist:
-        #print irs.filelist[i]['filename']
-        if irs.filelist[i]['filename'] == '/Windows/System32/config/SYSTEM':
-            print irs.filelist[i]['filename'], irs.filelist[i]['data']
-            filename = os.path.join(workdir, 'system')    
-            irs.collect_file(irs.filelist[i]['data'], filename)
-        if irs.filelist[i]['filename'] == '/eula.3082.txt':
-            print irs.filelist[i]['filename'], irs.filelist[i]['data']
-            filename = os.path.join(workdir, 'eula.txt')    
-            irs.collect_file(irs.filelist[i]['data'], filename)
+    if irs.options.standard == True:
+        targets = (('/Windows/System32/config/SYSTEM', 'system'),
+            ('/Windows/System32/config/SOFTWARE','software'),
+            ('/Windows/System32/config/SECURITY','security'),
+            ('/Windows/System32/config/SAM','sam'),
+            ('/eula.3082.txt','eula.txt'))
+        
+        for t in targets():
             
+            found = False
             
-    sys.exit()
+            # FIX = find target without looping through entire list
+            for i in irs.filelist:
+                if irs.filelist[i]['filename'] == targets(t,0):
+                    print irs.filelist[i]['filename'], irs.filelist[i]['data']
+                    filename = os.path.join(workdir, targets(t,1))    
+                    irs.collect_file(irs.filelist[i]['data'], filename)
+                    found = True            
+            
+            if found == False:
+                print "Unable to locate: %s" % (targets(t, 0))
     
 
