@@ -34,6 +34,15 @@ File an issue, please, if there is something you'd like.
 - [ ] Netcat support
 - [ ] Handle Win7 vs XP hive location differences
 - [ ] Add configuration file support
+- 
+
+Notes:
+------
+
+Unless I am missing something, you cannot recover the live registry hives through direct disk reads. Well, you can,
+but they are corrupted. I'm currently getting them via a created snapshot. But, if you're going to create a snapshot,
+you might as well get all of the interesting files from the snapshot.... Yes? No? Could rebuild the corrupted hives,
+but that is a completely different problem.
 
 Bugs:
 -----
