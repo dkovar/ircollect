@@ -23,7 +23,10 @@ pip install analyzemft
 Status:
 -------
 
-VERY beta. Active development daily, often hourly
+VERY beta. Active development daily, often hourly.
+
+Currently collects master boot record, $MFT, and live (corrupted) registry hives. User can modify table in ircollect.py
+to specify any files they desire. 
 
 Upcoming features:
 ------------------
@@ -34,6 +37,7 @@ File an issue, please, if there is something you'd like.
 - [ ] Netcat support
 - [ ] Handle Win7 vs XP hive location differences
 - [ ] Add configuration file support
+- [ ] Collect uncorrupted registry hives. (Requires a snapshot. If you create a snapshot, might as well collect everything that way.
 - 
 
 Notes:
