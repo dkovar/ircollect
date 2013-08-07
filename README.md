@@ -40,6 +40,7 @@ File an issue, please, if there is something you'd like.
 - [ ] Collect uncorrupted registry hives. (Requires a snapshot. If you create a snapshot, might as well collect everything that way.
 - 
 
+
 Notes:
 ------
 
