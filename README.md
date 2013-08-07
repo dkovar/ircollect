@@ -58,3 +58,14 @@ Thank you to:
 
 * Jamie Levy for mbr_parser
 * Willi Ballenthin - bit manipulation code, lots of useful tips for analyzeMFT
+
+Questions and Answers:
+-----------------------
+
+Q: Will this read any file, regardless of access controls?
+A: Yes.
+
+Q: Doesn't this tool give malicious actors access to information they shouldn't have?
+A: This isn't rocket science. The method used is documented in many places and several other tools use it. Not
+publishing this out of fear of misuse is doing a disservice to those who can really use it to help stop malicious
+actors.
