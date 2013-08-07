@@ -37,8 +37,7 @@ File an issue, please, if there is something you'd like.
 - [ ] Netcat support
 - [ ] Handle Win7 vs XP hive location differences
 - [ ] Add configuration file support
-- [ ] Collect uncorrupted registry hives. (Requires a snapshot. If you create a snapshot, might as well collect everything that way.
-- 
+- [ ] Collect uncorrupted registry hives
 
 
 Notes:
